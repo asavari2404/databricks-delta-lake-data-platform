@@ -157,3 +157,64 @@ Key Outcomes
 Built automated pipelines to identify and manage data quality issues.
 Implemented scalable Spark-based validation workflows.
 Demonstrated practical experience with Databricks, Delta Lake, and data quality engineering frameworks.
+
+Slowly Changing Dimension (SCD) Implementation with Delta Lake
+This project also demonstrates the implementation of Slowly Changing Dimensions (SCD) Type 1 and Type 2 using Delta Lake and Change Data Feed (CDF) in Databricks. The objective was to design scalable data pipelines capable of handling record updates, deletions, and historical tracking while maintaining clean analytics-ready tables in the Gold layer.
+The implementation follows modern data lakehouse architecture principles, separating raw ingestion, transformation, and curated analytical datasets.
+SCD Type 1 Implementation
+The SCD Type 1 pipeline was designed to overwrite existing records when updates occur while preserving deleted records in a separate archival table.
+
+Key Design Decisions
+1. Update Strategy
+2. Incoming records replace existing records in the target table without preserving historical versions.
+3. Archive Handling for Deleted Records
+4. Deleted records are captured and stored in a dedicated archive table within the Gold layer.
+5. The archive table retains Change Data Feed (CDF) metadata attributes to preserve change lineage.
+6. Clean Analytics Table
+The Gold SCD Type 1 table excludes CDF metadata fields to maintain a clean schema for analytics consumption.
+
+Benefits:
+1. Simplified data model for reporting use cases
+2. Efficient handling of updates while preserving deleted record history
+3. Clean schema for downstream analytics workloads
+
+SCD Type 2 Implementation
+The SCD Type 2 pipeline was implemented to track historical changes by maintaining multiple versions of records.
+
+Key Design Features
+1. Historical Version Tracking
+2. Each update generates a new record version while retaining previous versions for historical analysis.
+3. Schema Standardization
+CDF metadata attributes were removed from the final Gold layer tables to maintain a clean schema.
+4. Effective Date Management
+Internal system columns were renamed for clarity:
+__start_date → start_date
+__end_date → end_date
+5.Date fields were converted to date datatype to ensure consistent temporal tracking.
+6. Row Status Logic
+Implemented status tracking to identify active and inactive records:
+A → Active record
+I → Inactive historical record
+
+Benefits
+1. Full historical tracking of dimension changes
+2. Improved data lineage and change traceability
+3. Clean schema design for analytics and reporting systems
+
+Data Engineering Concepts Demonstrated
+1. Slowly Changing Dimensions (SCD Type 1 & Type 2)
+2. Delta Lake Change Data Feed (CDF)
+3. Data Archival Strategies
+4. Data Versioning and Historical Tracking
+5. Schema Standardization for Analytics
+6. Lakehouse Gold Layer Design
+
+Technologies Used
+1. Databricks
+2. Apache Spark (PySpark)
+3. Delta Lake
+4. Change Data Feed (CDF)
+5. SQL
+
+Key Outcome:
+Built scalable data pipelines capable of handling record updates, deletions, and historical tracking while maintaining clean and analytics-ready Gold layer tables in a Delta Lake-based data platform.
